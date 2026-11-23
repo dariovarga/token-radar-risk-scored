@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — Risk-Scored</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="title-block">
+    <h1>Token Radar <span class="tag">risk-scored</span></h1>
+    <p class="sub">Pre-token protocols, ranked by <strong>risk-adjusted implied value</strong> — what a
+    token would be worth if the protocol's record stayed as it is, discounted by how risky the farm is.</p>
+  </div>
+  <div class="meta" id="meta">Loading…</div>
+</header>
+
+<section class="method" id="method">
+  <h2>How the score works</h2>
+  <p><strong>Raw implied value</strong> = TVL × 0.30 × growth × maturity. Growth is the 7-day TVL change
+  clamped to −50…+100%, weighted 0.6. Maturity is 0.5 + min(age, 1460 days) / 1460 × 0.5; unknown age counts as 365 days.</p>
+  <p><strong>Risk score (0–100)</strong> = concentration + momentum + age + category + scale, each 0–20.
+  One chain scores 20, six or more score 2. A violent 7-day swing scores up to 20; no reported change scores 12.
+  Very young (&lt;90 days) scores 18 and very old without a token (&gt;5 years) scores 17 — a launch that may never come —
+  while 1–3 years scores 4. Category scores 5 for Dexs and Lending up to 15 for wrappers and exotic structures.
+  TVL under $10M scores 18; over $1B scores 2.</p>
+  <p><strong>Adjusted value</strong> = raw × (1 − 0.5 × risk / 100). Rank 1 is the highest adjusted value.
+  Grades: A 0–30 Low, B 31–42 Guarded, C 43–52 Moderate, D 53–62 Elevated, E 63–72 High, F 73–100 Severe.
+  Every farm plan sizes its position to the grade — a severe-risk farm is a small farm by construction.</p>
+  <p class="note">A protocol “records no token” when DefiLlama records no market cap, CoinGecko id or symbol for it.
+  That is the record, not proof: a protocol on this board may still have a token its record does not carry.
+  Nothing here predicts whether or when a token is issued.</p>
+</section>
+
+<section class="controls" id="controls">
+  <input id="q" type="search" placeholder="Search name or slug…" aria-label="Search">
+  <select id="cat" aria-label="Category"><option value="">All categories</option></select>
+  <select id="chain" aria-label="Chain"><option value="">All chains</option></select>
+  <select id="risk" aria-label="Risk grade">
+    <option value="">All risk grades</option>
+    <option value="A">A — Low</option><option value="B">B — Guarded</option>
+    <option value="C">C — Moderate</option><option value="D">D — Elevated</option>
+    <option value="E">E — High</option><option value="F">F — Severe</option>
+  </select>
+  <select id="sort" aria-label="Sort by">
+    <option value="adj">Sort: adjusted value</option>
+    <option value="raw">Sort: raw implied value</option>
+    <option value="tvl">Sort: TVL</option>
+    <option value="growth">Sort: 7-day change</option>
+    <option value="risk-asc">Sort: lowest risk</option>
+    <option value="risk-desc">Sort: highest risk</option>
+    <option value="age">Sort: oldest first</option>
+  </select>
+  <label class="check"><input id="watch" type="checkbox"> Watchlist only</label>
+  <button id="reset" type="button">Reset</button>
+</section>
+
+<section class="stats" id="stats"></section>
+
+<main>
+  <table id="board">
+    <thead><tr>
+      <th>#</th><th>Protocol</th><th>Category</th><th>Chains</th>
+      <th class="num">TVL</th><th class="num">7d</th><th class="num">Age</th>
+      <th class="num">Raw value</th><th>Risk</th><th class="num">Adjusted value</th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <p class="count" id="count"></p>
+</main>
+
+<section class="detail" id="detail" hidden>
+  <div class="detail-head"><h2 id="d-name"></h2><button id="d-close" type="button">Close</button></div>
+  <div id="d-body"></div>
+</section>
+
+<section class="live">
+  <h2>Already trading — the market's own values</h2>
+  <p class="sub">These protocols already have a token, so the board does not rank them. Their market caps are
+  DefiLlama's figures, not this model's. They are here so the radar never mixes a traded token with a launch that has not happened.</p>
+  <table id="live-table">
+    <thead><tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">7d</th></tr></thead>
+    <tbody id="live-rows"></tbody>
+  </table>
+</section>
+
+<footer>
+  <p>Data: DefiLlama protocols snapshot, fetched once and frozen — see the snapshot's own source line in the header.
+  Model: risk-2. The board covers the whole watchlist plus every other rankable pre-token protocol in the snapshot.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
