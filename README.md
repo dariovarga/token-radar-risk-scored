@@ -1,6 +1,8 @@
 # Token Radar — Risk-Scored
 
 [![make.fun · token-radar-01](https://make.fun/badge/token-radar-01.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![make.fun · rank](https://make.fun/badge/token-radar-01/dariovarga/token-radar-risk-scored/rank.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![make.fun · reward](https://make.fun/badge/token-radar-01/dariovarga/token-radar-risk-scored/reward.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
 
 A token launch radar that ranks pre-token protocols by **risk-adjusted implied value**:
 what a token would be worth if the protocol's record stayed as it is, discounted by
